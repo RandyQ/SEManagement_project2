@@ -41,6 +41,7 @@ app.post('/purchase', function(req, res) {
         }        
 });
 
+// Retrieves the price of @param 
 function getPrice(item) {
         let price = 0;
         if (item === "hotdog") {
@@ -59,6 +60,7 @@ function getPrice(item) {
         return price;
 }
 
+// Logs the order item, quantity, and price
 function logOrder(item, quantity, price) {
         fs.appendFile('./logs/logfile.txt', `Item: ${item} Quantity: ${quantity} Price: ${price}\n`, "utf8", (err) => {
                 if (err) {
