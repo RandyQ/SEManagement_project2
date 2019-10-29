@@ -20,13 +20,13 @@ app.get('/', function(req, res) {
 // Version of software
 app.get('/version', function (req, res) {
         // If a result was successfully sent
-        res ? logFunctionCall('/version', "was successfully sent") : logFunctionCall('/version', "FAILED to send");
+        res ? logFunctionCall('/version', "SUCCESSFULLY sent") : logFunctionCall('/version', "FAILED to send");
         res.send('This is version 1 of the HotBurger service\n');
 });
 
 // Retrieves a list of menu items
 app.get('/getmenu', function (req, res) {
-        res ? logFunctionCall("/getmenu", "was successfully sent") : logFunctionCall("/getmenu", "FAILED to send");
+        res ? logFunctionCall("/getmenu", "SUCCESSFULLY sent") : logFunctionCall("/getmenu", "FAILED to send");
         res.render('menu', {});
 });
 
@@ -35,7 +35,7 @@ app.post('/purchase', function(req, res) {
         if(isNaN(req.body.quantity)){
                 res.send("Not a valid quantity... " + "<a href='/getmenu'>Return</a>")
         } else {
-                res ? logFunctionCall("/purchase", "was successfully sent") : logFunctionCall("/purchase", "FAILED to send");
+                res ? logFunctionCall("/purchase", "SUCCESSFULLY sent") : logFunctionCall("/purchase", "FAILED to send");
                 logOrder(req.body.item.toLowerCase(), req.body.quantity, getPrice(req.body.item.toLowerCase()));
                 res.send("You purchased " + req.body.quantity + " " + req.body.item + "(s)");
         }        
