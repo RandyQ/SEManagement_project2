@@ -36,7 +36,7 @@ app.post('/purchase', function(req, res) {
                 res.send("Not a valid quantity... " + "<a href='/getmenu'>Return</a>")
         } else {
                 res ? logFunctionCall("/purchase", "was successfully sent") : logFunctionCall("/purchase", "FAILED to send");
-                logOrder(req.body.item, req.body.quantity, getPrice(req.body.item));
+                logOrder(req.body.item.toLowerCase(), req.body.quantity, getPrice(req.body.item.toLowerCase()));
                 res.send("You purchased " + req.body.quantity + " " + req.body.item + "(s)");
         }        
 });
