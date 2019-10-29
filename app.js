@@ -67,14 +67,6 @@ function logOrder(item, quantity, price) {
         });
 }
 
-// app.get('/logs', async function(req, res) {
-//         // If a result was successfully sent, write to the log (await) before reading from it
-//         res ? await logFunctionCall('/logs') : resultFailed('/logs');
-//         fs.readFile("./logs/logfile.txt", function(err, buf) {
-//                 err ? res.send("Failed to read file when calling the /logs route") : res.send(buf.toString());
-//         });
-// });
-
 // Logs function calls and indicates whether a result was succesful or not
 function logFunctionCall(route, resultSuccess) {
         let dateTime = new Date();
