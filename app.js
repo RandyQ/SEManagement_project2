@@ -60,7 +60,7 @@ function getPrice(item) {
 }
 
 function logOrder(item, quantity, price) {
-        fs.appendFile('./logs/logfile.txt', `Item: ${item} Quantity: ${quantity} Price: ${price}`, "utf8", (err) => {
+        fs.appendFile('./logs/logfile.txt', `Item: ${item} Quantity: ${quantity} Price: ${price}\n`, "utf8", (err) => {
                 if (err) {
                         console.log(`ERROR: Log failed to write to file.`);
                 }
