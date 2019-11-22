@@ -65,7 +65,7 @@ function adjustInventory(req) {
 
 // Checks if inventory service has stock of item(s)
 async function inStock(req) {
-        let stockCount = await axios.get(`http://localhost:3003/getcount?item=${req.body.item}`)
+        let stockCount = await axios.get(`18.223.169.23:8089/getcount?item=${req.body.item}`)
                 .then(function (response) {
                         return response.data;
                 })
