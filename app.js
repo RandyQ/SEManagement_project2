@@ -3,6 +3,7 @@ const app = express();
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
+const axios = require('axios');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -13,7 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Home page
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
         res.send("This is the home page\n");
 });
 
@@ -31,29 +32,69 @@ app.get('/getmenu', function (req, res) {
 });
 
 // Posts the order and quantity
-app.post('/purchase', function(req, res) {
-        if(isNaN(req.body.quantity)){
+app.post('/purchase', async function (req, res) {
+        if (isNaN(req.body.quantity)) {
                 res.send("Not a valid quantity... " + "<a href='/getmenu'>Return</a>")
         } else {
                 res ? logFunctionCall("/purchase", "SUCCESSFULLY sent") : logFunctionCall("/purchase", "FAILED to send");
-                logOrder(req.body.item.toLowerCase(), req.body.quantity, getPrice(req.body.item.toLowerCase()));
-                res.send("You purchased " + req.body.quantity + " " + req.body.item + "(s)");
-        }        
+                // Instead of immediately creating an order, call inventory service to get a report if in stock
+                if (await inStock(req)) {
+                        adjustInventory(req);
+                        logOrder(req.body.item.toLowerCase(), req.body.quantity, getPrice(req.body.item.toLowerCase()));
+                        res.send("You purchased " + req.body.quantity + " " + req.body.item + "(s)");
+                } else {
+                        res.send("Not in Stock!!!!");
+                }
+
+        }
 });
+
+// Calls /setcount method in inventory service to adjust accordingly
+function adjustInventory(req) {
+        axios.post(`http://localhost:3003/setcount`, {
+                item: req.body.item,
+                quantity: req.body.quantity
+        })
+                .then(function (response) {
+                        console.log(response.data);
+                })
+                .catch(function (error) {
+                        console.log(error);
+                });
+}
+
+// Checks if inventory service has stock of item(s)
+async function inStock(req) {
+        let stockCount = await axios.get(`http://localhost:3003/getcount?item=${req.body.item}`)
+                .then(function (response) {
+                        return response.data;
+                })
+                .catch(function (error) {
+                        // handle error	
+                        console.log(error);
+                        return 0;  // safe value
+                });
+
+        if (stockCount.data.quantity == 0) {
+                return false;
+        } else {
+                return true;
+        }
+}
 
 // Retrieves the price of @param 
 function getPrice(item) {
         let price = 0;
         if (item === "hotdog") {
                 price = 20;
-        } 
+        }
         else if (item === "hamburger") {
                 price = 35;
         }
         else if (item === "soda") {
                 price = 4;
         }
-        else if (item === "cookie"){
+        else if (item === "cookie") {
                 price = 6;
         }
 
@@ -85,7 +126,7 @@ function logFunctionCall(route, resultSuccess) {
 }
 
 // Error middleware
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
         res.status(404);
         res.send('404 – Not Found');
 });
