@@ -51,7 +51,7 @@ app.post('/purchase', async function (req, res) {
 
 // Calls /setcount method in inventory service to adjust accordingly
 function adjustInventory(req) {
-        axios.post(`http://fake_inventory:8089/setcount`, {
+        axios.post(`http://fake_inventory:3003/setcount`, {
                 item: req.body.item,
                 quantity: req.body.quantity
         })
@@ -65,7 +65,7 @@ function adjustInventory(req) {
 
 // Checks if inventory service has stock of item(s)
 async function inStock(req) {
-        let stockCount = await axios.get(`http://fake_inventory:8089/getcount?item=${req.body.item}`)
+        let stockCount = await axios.get(`http://fake_inventory:3003/getcount?item=${req.body.item}`)
                 .then(function (response) {
                         return response.data;
                 })
