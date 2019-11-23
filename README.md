@@ -1,15 +1,12 @@
 # SEManagement_project2
-Docker compose and using Volumes
-
 Randy Quimby and Brittany Lane
 
-How the work was split:
-Randy completed the monitoring service (and bash script) and Brittany finished the ordering service.  Both Randy and Brittany worked on the docker-compose.yml and volume together - often meeting in the computer lab. 
+How the work was split: 
+Randy completed the fake ordering service and made the changes to the original ordering service.  Brittany completed the fake inventory service.  Both Randy and Brittany completed the .yml file and Dockerfiles.
 
-IPv4 Public IP: 18.223.169.23
-IPv4 Private IP: 172.31.35.64
+To start the Fake Ordering Service, call the route 'localhost:3002/start' (or 18.223.169.23:8080/start).
+The start route '/start' begins the test harness.
 
-POST instructions for calling the '/purchase' route:
-In postman, choose POST and type in the '/purchase' route ('localhost:80/purchase' if running locally, '18.223.169.23/purchase' if running off the ec2 instance).  Select the Body tab under the URL and enter 'item' as a key with whatever value you desire in the value column (IE Hotdog, Hamburger, Soda, Cookie).  Enter 'quantity' as a second key with whatever numeric value you wish in the value column (non-numeric values will return an error page prompting you to return to /getmenu to try again).  
+To use the /setcount route, create a POST in postman with 'item' and 'quantity' in the body.  Use the URL '18.223.169.23:8089/setcount' (or localhost:3003/setcount).  If the quantity is set to 0, then the program will report back "Out of Stock!".
 
-You could also perform the same as above in any browser.  Simply go to the /getmenu route and fill out the form fields (dropdown and text entry) and click 'submit'.
+IPv4 Public IP: 18.223.169.23 IPv4 Private IP: 172.31.35.64
