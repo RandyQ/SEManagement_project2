@@ -22,7 +22,7 @@ app.get('/', function (req, res) {
 app.get('/version', function (req, res) {
         // If a result was successfully sent
         res ? logFunctionCall('/version', "SUCCESSFULLY sent") : logFunctionCall('/version', "FAILED to send");
-        res.send('This is version 1 of the HotBurger service\n');
+        res.send('This is version 2 of the HotBurger service\n');
 });
 
 // Retrieves a list of menu items
